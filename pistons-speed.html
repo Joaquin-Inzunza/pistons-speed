@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pistons Speed — Taller Mecánico</title>
+<meta name="description" content="Pistons Speed — Suspensión, mantención general, vulcanización y venta de neumáticos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #1c1c1c;
+    --bg-alt: #141414;
+    --surface: #242424;
+    --surface-2: #2c2c2c;
+    --border: rgba(255,255,255,0.13);
+    --ink: #f2f0ec;
+    --ink-dim: #b3aca3;
+    --ink-faint: #6f6a63;
+    --accent: #2a3fe0;
+    --accent-dark: #1c2ba8;
+    --accent-soft: rgba(42,63,224,0.16);
+    --accent-glow: #5ce6f2;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'Inter', sans-serif;
+    --display: 'Oswald', sans-serif;
+  }
+
+  *{ box-sizing: border-box; margin:0; padding:0; }
+  html{ scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+    *{ animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  body{
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.6;
+  }
+
+  a{ color: inherit; }
+  a:focus-visible, button:focus-visible{
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .wrap{ max-width: 1080px; margin: 0 auto; padding: 0 28px; }
+
+  /* ---------- TIRE TREAD DIVIDER (signature element) ---------- */
+  .tread{
+    height: 16px;
+    background:
+      repeating-linear-gradient(
+        -45deg,
+        var(--accent) 0px, var(--accent) 10px,
+        var(--bg-alt) 10px, var(--bg-alt) 20px
+      );
+  }
+
+  /* ---------- NAV ---------- */
+  header.nav{
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(20,20,20,0.92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner{
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 16px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+  }
+  .brand{
+    display: flex;
+    align-items: center;
+  }
+  .logo-img{
+    height: 42px;
+    width: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+  }
+  .nav-menu{
+    display: flex;
+    align-items: center;
+    gap: 26px;
+  }
+  .nav-links{
+    display: flex;
+    gap: 26px;
+    list-style: none;
+    font-size: 14px;
+  }
+  .nav-links a{
+    text-decoration: none;
+    color: var(--ink-dim);
+    transition: color 0.15s ease;
+  }
+  .nav-links a:hover{ color: var(--accent); }
+  .nav-ctas{
+    display: flex;
+    gap: 10px;
+  }
+  .nav-cta{
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 13.5px;
+    background: var(--accent);
+    color: #1c1c1c;
+    padding: 9px 16px;
+    border-radius: 3px;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .nav-cta.outline{
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--border);
+  }
+  .nav-toggle{
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+  }
+  .nav-toggle span{
+    width: 22px;
+    height: 2px;
+    background: var(--ink);
+    display: block;
+  }
+
+  @media (max-width: 780px){
+    .nav-toggle{ display: flex; }
+    .nav-menu{
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--bg-alt);
+      border-bottom: 1px solid var(--border);
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 20px;
+      padding: 22px 28px 28px;
+      display: none;
+    }
+    .nav-menu.open{ display: flex; }
+    .nav-links{
+      flex-direction: column;
+      gap: 14px;
+      font-size: 15px;
+    }
+    .nav-ctas{
+      flex-direction: column;
+      width: 100%;
+      gap: 10px;
+    }
+    .nav-cta{ text-align: center; }
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding: 84px 0 64px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before{
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url('logo-banner.png');
+    background-repeat: no-repeat;
+    background-position: center right -60px;
+    background-size: 780px auto;
+    opacity: 0.16;
+    filter: grayscale(15%);
+    pointer-events: none;
+  }
+  .hero::after{
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(100deg, var(--bg) 42%, rgba(28,28,28,0.55) 68%, rgba(28,28,28,0.15) 100%);
+    pointer-events: none;
+  }
+  .hero .wrap-inner, .hero-eyebrow, .hero-logo, .hero h1, .hero .subtitle, .hero-cta{
+    position: relative;
+    z-index: 1;
+  }
+  @media (max-width: 780px){
+    .hero::before{ background-position: center bottom -20px; background-size: 480px auto; opacity: 0.12; }
+  }
+  .hero-eyebrow{
+    font-family: var(--mono);
+    font-size: 12.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+  .hero-logo{
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 22px;
+    box-shadow: 0 0 0 1px var(--border);
+  }
+  .hero h1{
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(3rem, 9vw, 5.5rem);
+    line-height: 0.98;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    background: linear-gradient(100deg, var(--ink) 30%, var(--accent-glow) 78%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .hero .subtitle{
+    margin-top: 20px;
+    max-width: 540px;
+    color: var(--ink-dim);
+    font-size: 1.1rem;
+  }
+  .hero-cta{
+    display: flex;
+    gap: 14px;
+    margin-top: 36px;
+    flex-wrap: wrap;
+  }
+  .btn{
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 14px;
+    padding: 14px 26px;
+    border-radius: 3px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+  }
+  .btn-primary{
+    background: var(--accent);
+    color: #1c1c1c;
+    border: 1px solid var(--accent);
+  }
+  .btn-primary:hover{ transform: translateY(-1px); background: #5b9dff; }
+  .btn-ghost{
+    border: 1px solid var(--border);
+    color: var(--ink);
+  }
+  .btn-ghost:hover{ border-color: var(--accent); color: var(--accent); }
+
+  /* ---------- SECTIONS ---------- */
+  section{ padding: 68px 0; }
+  .section-eyebrow{
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+  h2.section-title{
+    font-family: var(--display);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: clamp(1.7rem, 4vw, 2.4rem);
+    margin-bottom: 32px;
+  }
+
+  /* ---------- SERVICE TICKETS ---------- */
+  .service-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+  }
+  .ticket{
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    position: relative;
+    padding: 24px 22px 20px;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  .ticket:hover{ border-color: var(--accent); transform: translateY(-2px); }
+  .ticket::after{
+    content: '';
+    position: absolute;
+    left: 0; right: 0; top: 66px;
+    height: 0;
+    border-top: 1px dashed var(--border);
+  }
+  .ticket-order{
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--ink-faint);
+    margin-bottom: 8px;
+  }
+  .ticket-title{
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    margin-bottom: 22px;
+  }
+  .ticket-desc{
+    color: var(--ink-dim);
+    font-size: 0.93rem;
+  }
+
+  /* ---------- WHY US ---------- */
+  .why-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+  }
+  .why-item{ padding-left: 18px; border-left: 2px solid var(--accent); }
+  .why-item h3{
+    font-family: var(--display);
+    font-size: 1.05rem;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .why-item p{ color: var(--ink-dim); font-size: 0.92rem; }
+
+  /* ---------- INFO / CONTACT ---------- */
+  .info-grid{
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 40px;
+    align-items: start;
+  }
+  @media (max-width: 720px){ .info-grid{ grid-template-columns: 1fr; } }
+
+  .info-card{
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 28px;
+  }
+  .info-row{
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.95rem;
+  }
+  .info-row:last-child{ border-bottom: none; }
+  .info-label{
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .info-value{ color: var(--ink); text-align: right; }
+  .placeholder{ color: var(--accent); font-style: italic; }
+
+  .map-box{
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--surface-2);
+    min-height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink-faint);
+    font-family: var(--mono);
+    font-size: 12px;
+    text-align: center;
+    padding: 20px;
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer{ padding: 32px 0; }
+  .footer-inner{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-faint);
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="brand">
+      <img src="logo.jpeg" alt="Pistons Speed" class="logo-img">
+    </div>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <div class="nav-menu" id="navMenu">
+      <ul class="nav-links">
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#nosotros">Nosotros</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+      <div class="nav-ctas">
+        <a class="nav-cta" href="https://wa.me/56945417463" target="_blank" rel="noopener">WhatsApp</a>
+        <a class="nav-cta outline" href="https://www.instagram.com/pistonsspeed/" target="_blank" rel="noopener">Instagram</a>
+        <a class="nav-cta outline" href="https://maps.app.goo.gl/iiPMcLwmErVEXVYC9" target="_blank" rel="noopener">Ubicación</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <img src="logo.jpeg" alt="Pistons Speed" class="hero-logo">
+    <div class="hero-eyebrow">Taller mecánico de motos</div>
+    <h1>Pistons<br>Speed</h1>
+    <p class="subtitle">Especialistas en motos: suspensión, mantención general, vulcanización y venta de neumáticos. Trabajo directo, sin intermediarios.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="https://wa.me/56945417463" target="_blank" rel="noopener">Cotiza por WhatsApp</a>
+      <a class="btn btn-ghost" href="#servicios">Ver servicios</a>
+    </div>
+  </section>
+
+  <div class="tread"></div>
+
+  <section id="servicios" class="wrap">
+    <div class="section-eyebrow">Lo que hacemos</div>
+    <h2 class="section-title">Servicios</h2>
+    <div class="service-grid">
+
+      <div class="ticket">
+        <div class="ticket-order">ORDEN N° 01</div>
+        <div class="ticket-title">Suspensión</div>
+        <p class="ticket-desc">Diagnóstico y reparación de horquilla delantera, amortiguador trasero y rodamientos de dirección.</p>
+      </div>
+
+      <div class="ticket">
+        <div class="ticket-order">ORDEN N° 02</div>
+        <div class="ticket-title">Mantención general</div>
+        <p class="ticket-desc">Cambio de aceite y filtros, ajuste y lubricación de cadena, revisión de frenos y puesta a punto general.</p>
+      </div>
+
+      <div class="ticket">
+        <div class="ticket-order">ORDEN N° 03</div>
+        <div class="ticket-title">Vulcanización</div>
+        <p class="ticket-desc">Reparación de pinchazos, parches y balanceo de neumáticos de moto.</p>
+      </div>
+
+      <div class="ticket">
+        <div class="ticket-order">ORDEN N° 04</div>
+        <div class="ticket-title">Venta de neumáticos</div>
+        <p class="ticket-desc">Venta e instalación de neumáticos para moto. Consulta disponibilidad y medidas por WhatsApp.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="tread"></div>
+
+  <section id="nosotros" class="wrap">
+    <div class="section-eyebrow">Por qué elegirnos</div>
+    <h2 class="section-title">Nosotros</h2>
+    <div class="why-grid">
+      <div class="why-item">
+        <h3>Atención directa</h3>
+        <p>Hablas directo con quien hace el trabajo, sin intermediarios ni letra chica.</p>
+      </div>
+      <div class="why-item">
+        <h3>Diagnóstico claro</h3>
+        <p>Te explicamos qué tiene tu moto y qué opciones tienes, antes de cualquier reparación.</p>
+      </div>
+      <div class="why-item">
+        <h3>Foco en suspensión y neumáticos</h3>
+        <p>Nos especializamos en lo que más se necesita: que tu moto ande firme y segura.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contacto" class="wrap">
+    <div class="section-eyebrow">Encuéntranos</div>
+    <h2 class="section-title">Contacto</h2>
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-row">
+          <span class="info-label">Dirección</span>
+          <span class="info-value">Av. Pedro de Valdivia 525, Concepción</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Horario</span>
+          <span class="info-value">Solo con cita previa</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">WhatsApp</span>
+          <span class="info-value">+56 9 4541 7463</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Instagram</span>
+          <span class="info-value"><a href="https://instagram.com/pistonsspeed" target="_blank" rel="noopener">@pistonsspeed</a></span>
+        </div>
+      </div>
+      <iframe
+        class="map-box"
+        style="border:0; padding:0;"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        src="https://www.google.com/maps?q=Av.+Pedro+de+Valdivia+525,+Concepci%C3%B3n,+Chile&output=embed">
+      </iframe>
+    </div>
+  </section>
+</main>
+
+<div class="tread"></div>
+
+<footer class="wrap">
+  <div class="footer-inner">
+    <span>Pistons Speed — Taller Mecánico de motocicletas</span>
+    <span>Concepción, Chile</span>
+  </div>
+</footer>
+
+<script>
+  const navToggle = document.getElementById('navToggle');
+  const navMenu = document.getElementById('navMenu');
+  navToggle.addEventListener('click', () => {
+    const isOpen = navMenu.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', isOpen);
+  });
+  navMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navMenu.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>
+</body>
+</html>
